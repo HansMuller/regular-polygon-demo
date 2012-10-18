@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="regular-polygon-demo-code.js"></script>
+<script>
+var animationID;
+
+function init() {
+    var svgElementId = "polygon-svg-root"; 
+    var shapeElementId = "polygon-shape-inside"
+
+    function animationLoop(t) {
+        animationID = window.requestAnimationFrame(animationLoop); 
+        if (t == -1)
+            initializeAnimation(svgElementId, shapeElementId);
+        else {
+           if (updateAnimation(t, svgElementId, shapeElementId))
+               window.cancelAnimationFrame(animationID);
+        }
+    }
+    animationLoop(-1);
+}
+
+function stop() {
+    window.cancelAnimationFrame(animationID);
+}
+
+</script>
+
+<style id="stylesheet">
+    #polygon-shape-inside, #polygon-svg-root {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+    }
+
+    #polygon-shape-inside {
+        word-wrap: break-word; 
+        font-family: Century Schoolbook;
+        font-size: x-large;
+        color: rgb(6, 5, 10);
+    }
+
+    #polygon-svg-root {
+        fill: rgba(233, 212, 105, 0.65);
+        stroke: rgba(120,76,51, 0.4);
+        stroke-width: 3;
+        -webkit-transform-origin: center;
+        -webkit-transform: translate(-10px) scale(1.02);
+    }
+</style>
+</head>
+
+<body onload="init()">
+  <article>
+    <section><!-- warning placeholder --></section><div style="position: relative; font: 125% geneva;">
+    <img src="bats.jpg"/>
+    <svg id="polygon-svg-root" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div id="polygon-shape-inside"><br/>We were somewhere around Barstow on the edge of the desert when the drugs began to take hold. I remember saying something like "I feel a bit lightheaded; maybe you should drive...". And suddenly there was a terrible roar all around us and the sky was full of what looked like huge bats, all swooping and screeching and diving around the car, which was going about a hundred miles an hour with the top down to Las Vegas. And a voice was screaming: "Holy Jesus! What are these goddamn animals?</div>
+  </article>
+<script>
+!function(){  
+    
+    function CSSExclusions(){}
+    // basic feature detection 
+    CSSExclusions.prototype.isSupported = (function(prop){
+
+        var el = document.createElement("div"),
+            style = el.style;
+
+        if (!el){
+            return false
+        }
+
+        // intentional bias towards -webkit because the prototype uses 
+        // code under prefixed notation that is still being debated in the W3C
+        style.setProperty("-webkit-shape-inside", "rectangle(0, 0, 100%, 100%)");
+        return (style.getPropertyValue("-webkit-shape-inside") != null);
+    })()    
+
+    var CSSExclusions = new CSSExclusions()
+
+    var checkSupport = function(){
+        if (CSSExclusions.isSupported){
+            return 
+        }
+        else{
+            var target = document.querySelector('article section') 
+
+            if (target){
+                target.innerHTML = createWarning()
+            }
+        }
+    }
+
+    var createWarning = function(){
+        var h = [],
+            p = function(){ h.push.apply(h, arguments) }
+            
+        p('<p class="unsupported error">')
+            p('<strong>Warning:</strong> You need to use the Chrome Canary browser with experimental WebKit features enabled to see this example working correctly. See <a href="../index.html#runs-in">here</a> for more info.')
+        p('</p>')
+
+        return h.join('')
+    }
+
+    document.addEventListener("DOMContentLoaded", checkSupport)
+}()
+</script>
+</body>
+</html>
